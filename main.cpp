@@ -18,20 +18,45 @@ int main() {
     cout<< ". " <<endl;
 
 
-    voyagerRoute.addWaypointAtEnd(mars);
+    voyagerRoute.addWaypointAtEnd(mars); //GOOD
     voyagerRoute.print();
 
 
-    voyagerRoute.addWaypointAtEnd(jupiter);
+    voyagerRoute.addWaypointAtEnd(jupiter); //GOOD
     voyagerRoute.print();
 
-    voyagerRoute.addWaypointAtEnd(saturn);
+    voyagerRoute.addWaypointAtEnd(saturn); //GOOD
     voyagerRoute.print();
 
-    voyagerRoute.addWaypointAtBeginning(earth);
+    voyagerRoute.addWaypointAtBeginning(earth); //GOOD
     voyagerRoute.print();
 
-    voyagerRoute.addWaypointAtIndex(2, venus);
+    voyagerRoute.addWaypointAtIndex(2, venus); //GOOD
+    voyagerRoute.print();
+
+    cout << " " <<endl;
+    cout << "trying the traversal methods"<< endl;
+    cout << " " <<endl;
+
+    voyagerRoute.traverseForward();
+
+    cout << " " <<endl;
+
+    voyagerRoute.traverseBackward();
+    cout << " " <<endl;
+    cout<< "end of trying the traversal methods"<<endl;
+    cout << " " <<endl;
+
+    voyagerRoute.removeWaypointAtBeginning(); //GOOD
+    voyagerRoute.print();
+
+    voyagerRoute.removeWaypointAtEnd(); //GOOD
+    voyagerRoute.print();
+
+    voyagerRoute.removeWaypointAtIndex(1); //GOOD
+    voyagerRoute.print();
+
+    voyagerRoute.setWaypoint(1, saturn);
     voyagerRoute.print();
     //
     // cout << "Voyager Route (Forward):\n";
