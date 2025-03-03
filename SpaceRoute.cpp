@@ -1,3 +1,10 @@
+/**
+ * Programming Assignment 1
+ * Implementing methods within the SpaceRoute class
+ * CS210-03
+ * March 2, 2025
+ * @author Ethan Truong
+ */
 #include <iostream>
 #include <string>
 using namespace std;
@@ -34,14 +41,14 @@ private:
     Node<T>* tail;
     int size;
 
-    void addWaypointEmptyRoute(T& data) { //good drawing
+    void addWaypointEmptyRoute(T& data) {
         Node<T>* newNode= new Node<T>(data);
         head = newNode;
         tail = newNode;
         size++;
     }
 
-    void removeWaypointWhenOnlyOne() { //good
+    void removeWaypointWhenOnlyOne() {
         delete head;
         head=nullptr;
         tail=nullptr;
@@ -50,6 +57,7 @@ private:
 
 public:
     SpaceRoute() : head(nullptr), tail(nullptr), size(0) {}  // Constructor
+
     ~SpaceRoute() { //Destructor
         Node<T>* temp= this->head;
         while (head) {
@@ -58,11 +66,12 @@ public:
             temp=head;
         }
     }
-    void addWaypointAtBeginning(T& data) { //waypoint is a node GOOD DRAw
-        if (size==0) { //used to say if (head == nullptr && tail == nullptr) GOOD
+
+    void addWaypointAtBeginning(T& data) {
+        if (size==0) {
             addWaypointEmptyRoute(data);
         }
-        else { //good
+        else {
             Node<T>* newNode = new Node<T>(data);
             newNode->next = head;
             head->prev = newNode;
@@ -71,10 +80,10 @@ public:
         }
     }
 
-    void addWaypointAtEnd(T& data) { //GOOD DRAW
-        if (size==0) { //if the SpaceRoute is empty used to say if (head == nullptr && tail == nullptr) GOOD
+    void addWaypointAtEnd(T& data) {
+        if (size==0) {
             addWaypointEmptyRoute(data);
-        } else { //good
+        } else {
             Node<T> *newNode = new Node<T>(data);
             tail->next = newNode;
             newNode->prev = tail;
@@ -84,16 +93,16 @@ public:
     }
 
     void addWaypointAtIndex(int index, T& data) {
-        if (index<0 || index>size) { //GOOD
+        if (index<0 || index>size) {
             cout<< "Index is invalid" <<endl;
         }
-        else if (index==0) { //GOOD
+        else if (index==0) {
             addWaypointAtBeginning(data);
         }
-        else if (index==size) { //GOOD
+        else if (index==size) {
             addWaypointAtEnd(data);
         }
-        else { //GOOD
+        else {
             Node<T>* newNode = new Node<T>(data);
             Node<T>* temp=getWaypoint(index-1);
             newNode->next=temp-> next;
@@ -104,14 +113,14 @@ public:
         }
     }
 
-     void removeWaypointAtBeginning() { //good in drawing
-        if (size==0) { //GOOD used to say if (head == nullptr && tail == nullptr) GOOD
+     void removeWaypointAtBeginning() {
+        if (size==0) {
             cout << "The SpaceRoute is already empty, so cannot delete " <<endl;
         }
-        else if (size==1) { //GOOD
+        else if (size==1) {
             removeWaypointWhenOnlyOne();
         }
-        else { //good
+        else {
             Node<T>* temp = head;
             head= head->next;
             delete temp;
@@ -119,77 +128,71 @@ public:
             size--;
         }
     }
-     void removeWaypointAtEnd() { //good in drawing
-        if (size==0) { //DONE used to say if (head == nullptr && tail == nullptr)
+
+     void removeWaypointAtEnd() {
+        if (size==0) {
             cout << "The SpaceRoute is already empty, so cannot delete " <<endl;
         }
-        else if (size==1) { //GOOD
+        else if (size==1) {
             removeWaypointWhenOnlyOne();
         }
-        else { //good
-            Node<T>* temp = head;
-            while(temp->next->next != nullptr) {
-                temp=temp->next;
-            }
-            delete temp->next;
-            temp->next = nullptr;
-            tail=temp;
+        else {
+            Node<T>* temp = tail;
+            temp->prev->next = nullptr;//setting the next pointer of the node before original tail to nullptr
+            tail = temp->prev;
+            delete temp;
             size--;
         }
     }
 
      void removeWaypointAtIndex(int index) {
-        if (size==0) { //DONE
+        if (size==0) {
             cout << "The SpaceRoute is empty, cannot delete anything " <<endl;
         }
-
-        else if (index<0 || index>=size) { //DONE for index<0
+        else if (index<0 || index>=size) {
             cout << "The index does not exist" << endl;
         }
-
-        else if (index==0) { //DONE
+        else if (index==0) {
             removeWaypointAtBeginning();
         }
-
-        else if (index==size-1) { //DONE
+        else if (index==size-1) {
             removeWaypointAtEnd();
         }
-
-        else { //done
-            Node<T>* temp = getWaypoint(index-1);
-            Node<T>* theOneToDelete= temp->next;
-            Node<T>* theOneNextToOneToDelete=theOneToDelete->next;
-            temp->next=theOneToDelete->next;
-            theOneNextToOneToDelete->prev=temp;
+        else {
+            Node<T>* leftOfTheOneToDelete = getWaypoint(index-1);
+            Node<T>* theOneToDelete= leftOfTheOneToDelete->next;
+            Node<T>* rightOfTheOneToDelete=theOneToDelete->next;
+            leftOfTheOneToDelete->next=theOneToDelete->next;
+            rightOfTheOneToDelete->prev=leftOfTheOneToDelete;
             delete theOneToDelete;
             size--;
         }
     }
-    void traverseForward() { //GOOD
+
+    void traverseForward() {
         for (int i=0; i<size; i++) {
             cout<<getWaypoint(i)->data<< " ";
         }
     }
-    void traverseBackward() { //GOOD
+
+    void traverseBackward() {
         for (int i=size-1; i>=0; i--) {
             cout<<getWaypoint(i)->data<< " ";
         }
     }
-     Node<T>* getWaypoint(int index) {
-        if (size==0) { //DONE
+
+    Node<T>* getWaypoint(int index) {
+        if (size==0) {
             cout << "The SpaceRoute is empty, cannot retrieve anything " <<endl;
             return nullptr;
         }
-
-        else if (index<0 || index>=size) { //good
+        else if (index<0 || index>=size) {
             cout << "The index does not exist" << endl;
             return nullptr;
         }
-
-        else if (index==0) { //GOOD
+        else if (index==0) {
             return head;
         }
-
         else if (index==size-1) {
             return tail;
         }
@@ -201,15 +204,20 @@ public:
             return temp;
         }
     }
+
     void setWaypoint(int index, T& data) {
-        if (size==0) { //GOOD
+        if (size==0) {
             cout << "The SpaceRoute is empty, cannot set any Waypoint to " <<data <<endl;
         }
-
-        else if (index<0 || index>=size) { //good
+        else if (index<0 || index>=size) {
             cout << "The index does not exist" << endl;
         }
-
+        else if (index==0) {
+            head->data = data;
+        }
+        else if (index==size-1) {
+            tail->data = data;
+        }
         else {
             Node<T>* temp =head;
             for (int i=0; i<index; i++) {
@@ -218,14 +226,14 @@ public:
             temp->data = data;
         }
     }
-    void print(){ //GOOD
-            Node<T>* current = head;
+
+    void print(){
+        Node<T>* current = head;
             while (current) {
                 current->print();
                 current = current->next;
             }
             cout << endl;
         }
-
 };
 
